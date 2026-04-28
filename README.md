@@ -27,7 +27,11 @@ mosquitto -p 1883
 ```bash
 python simple_rag_agent.py
 
-## Test Input (Publish GPS Telemetry)
+
+
+## How to Test
+
+### Test Input (Publish GPS Telemetry)
 Open a new terminal.
 ```bash
 mosquitto_pub -t iobt/uav/gps -m '{"device":"UAV-GPS","latitude":65.1,"longitude":-97.6,"altitude":100.0,"accuracy":1.0,"timestamp":"2026-03-12T19:05:00Z"}'
