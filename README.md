@@ -1,39 +1,26 @@
 # Simple RAG Agent
 
-A lightweight Retrieval-Augmented Generation (RAG) agent that listens to live UAV GPS telemetry and flags suspicious activity using a local quantized LLM plus a Chroma vector database.
+A small Retrieval-Augmented Generation (RAG) agent that listens to live UAV GPS telemetry (MQTT), retrieves relevant threat/rule context from a local Chroma vector DB, augments a local quantized LLM prompt, and emits a structured JSON detection result.
 
-## What It Does
-
+## What it does (brief)
 - Subscribes to MQTT topic `iobt/uav/gps`
-- Retrieves the top-3 relevant threat rules from Chroma
+- Retrieves top-3 relevant threat documents from Chroma
 - Augments the LLM prompt with retrieved context
-- Returns a JSON detection decision (attack type, confidence, reason)
+- Uses a local quantized GGUF model to generate a JSON detection report:
+  `{ attack_suspected, attack_type, confidence, reason }`
 
-## How to Run
+## Quick Start
 
-### 1. Install Dependencies
+### Prerequisites
+- Python 3.8+
+- MQTT broker (Mosquitto recommended)
+- ~8 GB RAM (4+GB for the model), ~30 GB disk for models
+- Create and activate a virtualenv (recommended)
+
+### Install Python deps
 ```bash
-pip install paho-mqtt chromadb sentence-transformers llama-cpp-python
-
-### 2. Download a Quantized Model
-```bash
-python dl_models.py
-
-### 3. Start a MQTT Broker
-```bash
-mosquitto -p 1883
-
-### 4. Run the Agent
-```bash
-python simple_rag_agent.py
-
-
-
-## How to Test
-
-### Test Input (Publish GPS Telemetry)
-Open a new terminal.
-```bash
-mosquitto_pub -t iobt/uav/gps -m '{"device":"UAV-GPS","latitude":65.1,"longitude":-97.6,"altitude":100.0,"accuracy":1.0,"timestamp":"2026-03-12T19:05:00Z"}'
-
-
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+# Or individually:
+# pip install paho-mqtt chromadb sentence-transformers llama-cpp-python
